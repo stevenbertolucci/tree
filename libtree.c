@@ -275,7 +275,10 @@ read_file_list(DIR *dirp, struct fileinfo **file_list, size_t *file_count)
     /* Skip the "." and ".." subdirectories */
     if (strcoll(de->d_name, ".") == 0 || strcoll(de->d_name, "..") == 0) continue;
 
-    /* TODO: Skip hidden files? */
+    /* Skip hidden files */
+    if (!opts.all && de->d_name[0] == '.') {
+        continue;
+    }
 
     ++(*file_count);
     (*file_list) = realloc((*file_list), sizeof *(*file_list) * (*file_count));
