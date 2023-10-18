@@ -114,7 +114,6 @@ exit:
   return errno ? -1 : 0;
 }
 
-/* TODO: START HERE */
 static int
 tree_print_recurse(struct fileinfo finfo)
 {
@@ -125,20 +124,23 @@ tree_print_recurse(struct fileinfo finfo)
 
   errno = 0;
 
-  /* TODO: implement dirsonly functionality here */
-  if (dirsonly) {
+  /* If it is not a directory, return */
+  if (opts.dirsonly && !S_ISDIR(finfo.st.st_mode)) {
     return 0;
   }
 
   /* TODO: print indentation */
-  for (int i = 0; i < depth; i++) {
-    printf("\t");
+  /* I used helper function print path info to format the output */
+
+  /* Print the path info */
+  if (print_path_info(finfo) == -1) {
+    goto exit;
   }
 
-  /* TODO: print the path info */
-  printf("%s", finfo.path);
-
-  /* TODO: continue ONLY if path is a directory */
+  /* Continue ONLY if path is a directory */
+  if (!S_ISDIR(finfo.st.st_mode)) {
+    goto exit;
+  }
 
   if ((dir = openat(cur_dir, finfo.path, O_RDONLY | O_CLOEXEC)) == -1 ||
       (dirp = fdopendir(dir)) == NULL) {
@@ -174,6 +176,14 @@ exit:;
    *       look for open*() function calls for file related allocations
    */
   cur_dir = sav_dir;
+
+  /* If the directory if open, close it */
+  if (dirp) {
+    closedir(dirp);
+  }
+
+  /* Used helper function to free any allocated resources */
+  free_file_list(&file_list, file_count);
   return errno ? -1 : 0;
 }
 
@@ -186,17 +196,21 @@ print_path_info(struct fileinfo finfo)
 {
   char sep = '[';
   if (opts.perms) {
-    if (printf("%c%s", sep, "abcdefghi") < 0) goto exit; /* TODO */
+    /* Used helper function mode_string to return a 9 character modestring */
+    char * perms = mode_string(finfo.st.st_mode);
+    if (printf("%c%s", sep, perms) < 0) goto exit;
     sep = ' ';
   }
   if (opts.user) {
-    /*  Hint: getpwuid(3) */
-    if (printf("%c%s", sep, "hello") < 0) goto exit; /* TODO */
+    /* Hint: getpwuid(3) */
+    struct passwd *pwuid = getpwuid(finfo.st.st_uid);   /* Found this on man page. URL: man7.org/linux/man-pages/man3/getpwuid.3p.html */
+    if (printf("%c%s", sep, pwuid ? pwuid->pw_name: "Unknown") < 0) goto exit;
     sep = ' ';
   }
   if (opts.group) {
     /*  Hint: getgrgid(3) */
-    if (printf("%c%s", sep, "world") < 0) goto exit; /* TODO */
+    struct group *group = getgrgid(finfo.st.st_gid);    /* Source: man7.org/linux/man-pages/man3/getgrgid.3p.html */
+    if (printf("%c%s", sep, group ? group->gr_name: "Unknown") < 0) goto exit;
     sep = ' ';
   }
   if (opts.size) {
