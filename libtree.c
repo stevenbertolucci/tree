@@ -177,7 +177,7 @@ exit:;
    */
   cur_dir = sav_dir;
 
-  /* If the directory if open, close it */
+  /* If the directory is open, close it */
   if (dirp) {
     closedir(dirp);
   }
@@ -197,7 +197,7 @@ print_path_info(struct fileinfo finfo)
   char sep = '[';
   if (opts.perms) {
     /* Used helper function mode_string to return a 9 character modestring */
-    char * perms = mode_string(finfo.st.st_mode);
+    char* perms = mode_string(finfo.st.st_mode);
     if (printf("%c%s", sep, perms) < 0) goto exit;
     sep = ' ';
   }
