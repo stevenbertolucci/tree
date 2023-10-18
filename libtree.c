@@ -244,7 +244,8 @@ filecmp(void const *_lhs, void const *_rhs)
       retval = 0; /*  Well that was easy */
       break;
     case ALPHA:
-      break; /* TODO */
+      retval = strcoll(lhs->path, rhs->path);
+      break;
     case RALPHA:
       retval = strcoll(rhs->path, lhs->path);
       break;
