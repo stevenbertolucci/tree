@@ -126,10 +126,17 @@ tree_print_recurse(struct fileinfo finfo)
   errno = 0;
 
   /* TODO: implement dirsonly functionality here */
+  if (dirsonly) {
+    return 0;
+  }
 
   /* TODO: print indentation */
+  for (int i = 0; i < depth; i++) {
+    printf("\t");
+  }
 
   /* TODO: print the path info */
+  printf("%s", finfo.path);
 
   /* TODO: continue ONLY if path is a directory */
 
