@@ -125,7 +125,7 @@ tree_print_recurse(struct fileinfo finfo)
   errno = 0;
 
   /* If it is not a directory, return */
-  if (opts.dirsonly && !S_ISDIR(finfo.st.st_mode)) {
+  if (opts.dirsonly && !S_ISDIR(finfo.st.st_mode)) {      /* S_ISDIR tests too see if it is a directory. man7.org/linux/man-pages/man0/sys_stat.h.0p.html */
     return 0;
   }
 
@@ -179,7 +179,7 @@ exit:;
 
   /* If the directory is open, close it */
   if (dirp) {
-    closedir(dirp);
+    closedir(dirp);         /* Close the directory (dirp) */
   }
 
   /* Used helper function to free any allocated resources */
@@ -215,7 +215,8 @@ print_path_info(struct fileinfo finfo)
   }
   if (opts.size) {
     /*  Hint: stat.h(0p) */
-    if (printf("%c%jd", sep, (intmax_t)-12) < 0) goto exit; /* TODO */
+    /* Source: man7.org/linux/man-pages/man0/sys_stat.h.0p.html */
+    if (printf("%c%jd", sep, (intmax_t)finfo.st.st_size) < 0) goto exit;   /* st_size will determine the file size */
     sep = ' ';
   }
   if (sep != '[')
