@@ -152,8 +152,6 @@ tree_print_recurse(struct fileinfo finfo)
   }
   cur_dir = dir;
 
-  if (putchar('\n') == EOF) goto exit;
-
   if (read_file_list(dirp, &file_list, &file_count) == -1) {
     if (errno == EACCES) {
       errno = 0; /* not an error, so reset errno! */ 
@@ -161,6 +159,8 @@ tree_print_recurse(struct fileinfo finfo)
     }
     goto exit;
   }
+
+  if (putchar('\n') == EOF) goto exit;
   /* See QSORT(3) for info about this function. It's not super important. It just sorts the list of
    * files using the filesort() function, which is the part you need to finish. */
   qsort(file_list, file_count, sizeof *file_list, filecmp);
