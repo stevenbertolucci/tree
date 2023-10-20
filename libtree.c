@@ -126,7 +126,7 @@ tree_print_recurse(struct fileinfo finfo)
 
   /* If it is not a directory, return */
   if (opts.dirsonly && !S_ISDIR(finfo.st.st_mode)) {      /* S_ISDIR tests too see if it is a directory. man7.org/linux/man-pages/man0/sys_stat.h.0p.html */
-    return 0;
+    goto exit;
   }
 
   /* TODO: print indentation */
