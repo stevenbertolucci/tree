@@ -122,7 +122,7 @@ tree_print_recurse(struct fileinfo finfo)
   struct fileinfo *file_list = NULL;
   size_t file_count = 0;
 
-  errno = 0;
+  errno = 0;     /* For error return value */
 
   /* If it is not a directory, return */
   if (opts.dirsonly && !S_ISDIR(finfo.st.st_mode)) {      /* S_ISDIR tests too see if it is a directory. man7.org/linux/man-pages/man0/sys_stat.h.0p.html */
@@ -133,12 +133,12 @@ tree_print_recurse(struct fileinfo finfo)
   /* I used helper function print path info to format the output */
 
   /* Print the path info */
-  if (print_path_info(finfo) == -1) {
+  if (print_path_info(finfo) == -1) {          /* Used helper function 'print_path_info' to print the path info */
     goto exit;
   }
 
   /* Continue ONLY if path is a directory */
-  if (!S_ISDIR(finfo.st.st_mode)) {
+  if (!S_ISDIR(finfo.st.st_mode)) {            /* Checks the mode of the directory by reading the symbolic links man7.org/linux/man-pages/man0/sys_stat.h.0p.html */
     goto exit;
   }
 
@@ -245,10 +245,10 @@ filecmp(void const *_lhs, void const *_rhs)
       retval = 0; /*  Well that was easy */
       break;
     case ALPHA:
-      retval = strcoll(lhs->path, rhs->path);
+      retval = strcoll(lhs->path, rhs->path);    /* Compares the strings. In this case, alphabetically */
       break;
     case RALPHA:
-      retval = strcoll(rhs->path, lhs->path);
+      retval = strcoll(rhs->path, lhs->path);    /* Compares the strings. In this case, alphabetically reversed */
       break;
     case TIME:
       /*  I did this one for you :) */
