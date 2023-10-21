@@ -12,7 +12,7 @@
 int
 main(int argc, char *argv[])
 {
-  struct tree_options opts = {.indent = 2, .sort=ALPHA};
+  struct tree_options opts = {.indent = 6, .sort=ALPHA};
   char const *optstring = "+adpugsrtUhi:";
   for (char c; (c = getopt(argc, argv, optstring)) != -1;) {
     switch (c) {
