@@ -127,7 +127,10 @@ tree_print_recurse(struct fileinfo finfo)
   /* If it is not a directory, return */
   if (opts.dirsonly && !S_ISDIR(finfo.st.st_mode)) {      /* S_ISDIR tests too see if it is a directory. man7.org/linux/man-pages/man0/sys_stat.h.0p.html */
     goto exit;                                            /* opts.dirsonly checks with main.c to see if user enters '-d' option */
+  } else {
+    print_path_info(finfo);
   }
+  
 
   /* TODO: print indentation */
   /* I used helper function print path info to format the output */
