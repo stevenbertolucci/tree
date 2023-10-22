@@ -162,7 +162,7 @@ tree_print_recurse(struct fileinfo finfo)
     goto exit;
   }
 
-  if (file_count > 0){
+  if (file_count > 0 && read_file_list(dirp, &file_list, &file_count)){
     if (putchar('\n') == EOF) goto exit;
   }
   /* See QSORT(3) for info about this function. It's not super important. It just sorts the list of
