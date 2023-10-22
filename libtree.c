@@ -127,7 +127,7 @@ tree_print_recurse(struct fileinfo finfo)
   /* If it is not a directory, return */
   if (opts.dirsonly && !S_ISDIR(finfo.st.st_mode)) {      /* S_ISDIR tests too see if it is a directory. man7.org/linux/man-pages/man0/sys_stat.h.0p.html */
     goto exit;                                            /* opts.dirsonly checks with main.c to see if user enters '-d' option */
-  }
+  } 
 
   /* TODO: print indentation */
   for (int i = 0; i < depth; i++) {
@@ -162,7 +162,9 @@ tree_print_recurse(struct fileinfo finfo)
     goto exit;
   }
 
-  if (putchar('\n') == EOF) goto exit;
+  if (file_count > 0){
+    if (putchar('\n') == EOF) goto exit;
+  }
   /* See QSORT(3) for info about this function. It's not super important. It just sorts the list of
    * files using the filesort() function, which is the part you need to finish. */
   qsort(file_list, file_count, sizeof *file_list, filecmp);
@@ -229,9 +231,11 @@ print_path_info(struct fileinfo finfo)
     if (readlinkat(cur_dir, finfo.path, rp, PATH_MAX) == -1) goto exit;
     if (printf(" -> %s", rp) < 0) goto exit;
   }
-  if (depth > 0) {
+
+  if (depth > 0 && !opts.dirsonly) {
     putchar('\n');
   }
+
 exit:
   return errno ? -1 : 0;
 }
