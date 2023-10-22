@@ -162,7 +162,8 @@ tree_print_recurse(struct fileinfo finfo)
     goto exit;
   }
 
-  if (file_count > 0 && read_file_list(dirp, &file_list, &file_count)){
+  if (read_file_list(dirp, &file_list, &file_count)){
+    putchar('\n');
     if (putchar('\n') == EOF) goto exit;
   }
   /* See QSORT(3) for info about this function. It's not super important. It just sorts the list of
@@ -232,7 +233,7 @@ print_path_info(struct fileinfo finfo)
     if (printf(" -> %s", rp) < 0) goto exit;
   }
 
-  if (depth > 0 && !opts.dirsonly) {
+  if (depth > -1) {
     putchar('\n');
   }
 
