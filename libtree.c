@@ -169,6 +169,7 @@ tree_print_recurse(struct fileinfo finfo)
   ++depth;
   for (size_t i = 0; i < file_count; ++i) {
     if (tree_print_recurse(file_list[i]) == -1) goto exit; /*  Recurse */
+    putchar('\n');
   }
   --depth;
 exit:;
