@@ -132,7 +132,7 @@ tree_print_recurse(struct fileinfo finfo)
 
   /* TODO: print indentation */
   for (int i = 0; i < depth; i++) {
-    printf("  ");                              /* Prints the indentation */
+    printf("  \n");                              /* Prints the indentation and newline */
   }
 
   /* Print the path info */
