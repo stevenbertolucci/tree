@@ -204,13 +204,13 @@ print_path_info(struct fileinfo finfo)
   if (opts.user) {
     /* Hint: getpwuid(3) */
     struct passwd *pwuid = getpwuid(finfo.st.st_uid);   /* Found this on man page. URL: man7.org/linux/man-pages/man3/getpwuid.3p.html */
-    if (printf("%c%s", sep, pwuid ? pwuid->pw_name: "Unknown") < 0) goto exit;
+    if (printf("%c%s", sep, pwuid ? pwuid->pw_name: "[No Info]") < 0) goto exit;
     sep = ' ';
   }
   if (opts.group) {
     /*  Hint: getgrgid(3) */
     struct group *group = getgrgid(finfo.st.st_gid);    /* Source: man7.org/linux/man-pages/man3/getgrgid.3p.html */
-    if (printf("%c%s", sep, group ? group->gr_name: "Unknown") < 0) goto exit;
+    if (printf("%c%s", sep, group ? group->gr_name: "[No Info]") < 0) goto exit;
     sep = ' ';
   }
   if (opts.size) {
