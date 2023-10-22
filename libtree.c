@@ -128,12 +128,10 @@ tree_print_recurse(struct fileinfo finfo)
   if (opts.dirsonly && !S_ISDIR(finfo.st.st_mode)) {      /* S_ISDIR tests too see if it is a directory. man7.org/linux/man-pages/man0/sys_stat.h.0p.html */
     goto exit;                                            /* opts.dirsonly checks with main.c to see if user enters '-d' option */
   }
-  
 
   /* TODO: print indentation */
   for (int i = 0; i < depth; i++) {
-    printf("  ");                              /* Prints the indentation */
-    putchar('\n');
+    printf("  ");                               /* Prints the indentation */
   }
 
   /* Print the path info */
@@ -230,6 +228,9 @@ print_path_info(struct fileinfo finfo)
     char rp[PATH_MAX + 1] = {0};
     if (readlinkat(cur_dir, finfo.path, rp, PATH_MAX) == -1) goto exit;
     if (printf(" -> %s", rp) < 0) goto exit;
+  }
+  if (depth > 0) {
+    putchar('\n');
   }
 exit:
   return errno ? -1 : 0;
