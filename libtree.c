@@ -136,6 +136,8 @@ tree_print_recurse(struct fileinfo finfo)
     printf("  ");                               /* Prints the indentation */
   }
 
+  //putchar('\n');
+
   /* Print the path info */
   if (print_path_info(finfo) == -1) {          /* Used helper function 'print_path_info' to print the path info */
     goto exit;
@@ -196,7 +198,6 @@ exit:;
     closedir(dirp);         /* Close the directory (dirp) */
   }
 
-  //putchar('\n');
   /* Used helper function to free any allocated resources */
   free_file_list(&file_list, file_count);
   return errno ? -1 : 0;
