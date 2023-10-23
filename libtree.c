@@ -127,7 +127,7 @@ tree_print_recurse(struct fileinfo finfo)
   /* If it is not a directory, return */
   if (opts.dirsonly && !S_ISDIR(finfo.st.st_mode)) {      /* S_ISDIR tests too see if it is a directory. man7.org/linux/man-pages/man0/sys_stat.h.0p.html */
     goto exit;                                            /* opts.dirsonly checks with main.c to see if user enters '-d' option */
-  } 
+  }
 
   /* TODO: print indentation */
   for (int i = 0; i < depth; i++) {
@@ -139,13 +139,14 @@ tree_print_recurse(struct fileinfo finfo)
     goto exit;
   }
 
+  putchar('\n');
+
   /* Continue ONLY if path is a directory */
   if (!S_ISDIR(finfo.st.st_mode)) {            /* Checks the mode of the directory by reading the symbolic links man7.org/linux/man-pages/man0/sys_stat.h.0p.html */
     goto exit;
   }
 
-  if ((dir = openat(cur_dir, finfo.path, O_RDONLY | O_CLOEXEC)) == -1 ||
-      (dirp = fdopendir(dir)) == NULL) {
+  if ((dir = openat(cur_dir, finfo.path, O_RDONLY | O_CLOEXEC)) == -1 || (dirp = fdopendir(dir)) == NULL) {
     if (errno == EACCES) {
       errno = 0; /* not an error, so reset errno! */
       printf(" [could not open directory %s]\n", finfo.path);
@@ -162,10 +163,10 @@ tree_print_recurse(struct fileinfo finfo)
     goto exit;
   }
 
-  if (read_file_list(dirp, &file_list, &file_count)){
-    putchar('\n');
+  if (read_file_list(dirp, &file_list, &file_count)) {
     if (putchar('\n') == EOF) goto exit;
   }
+  
   /* See QSORT(3) for info about this function. It's not super important. It just sorts the list of
    * files using the filesort() function, which is the part you need to finish. */
   qsort(file_list, file_count, sizeof *file_list, filecmp);
@@ -233,9 +234,9 @@ print_path_info(struct fileinfo finfo)
     if (printf(" -> %s", rp) < 0) goto exit;
   }
 
-  if (depth > -1) {
-    putchar('\n');
-  }
+ //if (depth > -1) {
+   //putchar('\n');
+  //}
 
 exit:
   return errno ? -1 : 0;
