@@ -124,23 +124,19 @@ tree_print_recurse(struct fileinfo finfo)
 
   errno = 0;     /* For error return value */
   
-  //putchar('\n');
   /* If it is not a directory, return */
   if (opts.dirsonly && !S_ISDIR(finfo.st.st_mode)) {      /* S_ISDIR tests too see if it is a directory. man7.org/linux/man-pages/man0/sys_stat.h.0p.html */
     goto exit;                                            /* opts.dirsonly checks with main.c to see if user enters '-d' option */
   }
-  
+ 
   putchar('\n');
   /* TODO: print indentation */
   for (int i = 0; i < depth; i++) {
     printf("  ");                               /* Prints the indentation */
-  }
-
- // putchar('\n');
+  } 
 
   /* Print the path info */
   if (print_path_info(finfo) == -1) {          /* Used helper function 'print_path_info' to print the path info */
-    //putchar('\n');
     goto exit;
   }
 
@@ -148,22 +144,18 @@ tree_print_recurse(struct fileinfo finfo)
 
   /* Continue ONLY if path is a directory */
   if (!S_ISDIR(finfo.st.st_mode)) {            /* Checks the mode of the directory by reading the symbolic links man7.org/linux/man-pages/man0/sys_stat.h.0p.html */
-    //putchar('\n');
     goto exit;
   }
   
-  //putchar('\n');
-
+  
   if ((dir = openat(cur_dir, finfo.path, O_RDONLY | O_CLOEXEC)) == -1 || (dirp = fdopendir(dir)) == NULL) {
     if (errno == EACCES) {
       errno = 0; /* not an error, so reset errno! */
       printf(" [could not open directory %s]", finfo.path);
     }
-    //putchar('\n');
     goto exit;
   }
 
-  //putchar('\n');
   cur_dir = dir;
 
   if (read_file_list(dirp, &file_list, &file_count) == -1) {
@@ -171,48 +163,41 @@ tree_print_recurse(struct fileinfo finfo)
       errno = 0; /* not an error, so reset errno! */ 
       printf(" [could not open directory %s]", finfo.path);
     }
-    //putchar('\n');
     goto exit;
   }
 
-  //putchar('\n');
-  //if (read_file_list(dirp, &file_list, &file_count)) {
+  if (read_file_list(dirp, &file_list, &file_count)) {
     if (putchar('\n') == EOF) goto exit;
-  //}
+  }
   
-  //putchar('\n');
+ 
   /* See QSORT(3) for info about this function. It's not super important. It just sorts the list of
    * files using the filesort() function, which is the part you need to finish. */
   qsort(file_list, file_count, sizeof *file_list, filecmp);
-  
-  //putchar('\n');
 
   ++depth;
   for (size_t i = 0; i < file_count; ++i) {
-    //putchar('\n');
     if (tree_print_recurse(file_list[i]) == -1) goto exit; /*  Recurse */
   }
   --depth;
-  //putchar('\n');
 exit:;
   /* TODO: Free any allocated resources.
    * Hint: look for realloc, malloc, and calloc calls for memory allocation
    *       look for open*() function calls for file related allocations
    */
 
-   //putchar('\n'); 
   cur_dir = sav_dir;
 
   /* If the directory is open, close it */
   if (dirp) {
+    if (!S_ISDIR(finfo.st.st_mode)) {
+      putchar('\n');
+    }
     closedir(dirp);         /* Close the directory (dirp) */
   }
 
- // putchar('\n');
   /* Used helper function to free any allocated resources */
-  //putchar('\n');
   free_file_list(&file_list, file_count);
-  //putchar('\n');
   return errno ? -1 : 0;
 }
 
@@ -257,8 +242,8 @@ print_path_info(struct fileinfo finfo)
     if (printf(" -> %s", rp) < 0) goto exit;
   }
 
- //if (depth > -1) {
-   //putchar('\n');
+ //if (depth == 0) {
+  // putchar('\n');
   //}
 
 exit:
