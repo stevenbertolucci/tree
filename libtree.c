@@ -129,7 +129,7 @@ tree_print_recurse(struct fileinfo finfo)
     goto exit;                                            /* opts.dirsonly checks with main.c to see if user enters '-d' option */
   }
  
-  putchar('\n');
+  //putchar('\n');
   /* TODO: print indentation */
   for (int i = 0; i < depth; i++) {
     printf("  ");                               /* Prints the indentation */
@@ -144,6 +144,7 @@ tree_print_recurse(struct fileinfo finfo)
 
   /* Continue ONLY if path is a directory */
   if (!S_ISDIR(finfo.st.st_mode)) {            /* Checks the mode of the directory by reading the symbolic links man7.org/linux/man-pages/man0/sys_stat.h.0p.html */
+    putchar('\n');
     goto exit;
   }
   
@@ -151,7 +152,7 @@ tree_print_recurse(struct fileinfo finfo)
   if ((dir = openat(cur_dir, finfo.path, O_RDONLY | O_CLOEXEC)) == -1 || (dirp = fdopendir(dir)) == NULL) {
     if (errno == EACCES) {
       errno = 0; /* not an error, so reset errno! */
-      printf(" [could not open directory %s]", finfo.path);
+      printf(" [could not open directory %s]\n", finfo.path);
     }
     goto exit;
   }
@@ -161,14 +162,14 @@ tree_print_recurse(struct fileinfo finfo)
   if (read_file_list(dirp, &file_list, &file_count) == -1) {
     if (errno == EACCES) {
       errno = 0; /* not an error, so reset errno! */ 
-      printf(" [could not open directory %s]", finfo.path);
+      printf(" [could not open directory %s]\n", finfo.path);
     }
     goto exit;
   }
 
-  if (read_file_list(dirp, &file_list, &file_count)) {
+  //if (read_file_list(dirp, &file_list, &file_count)) {
     if (putchar('\n') == EOF) goto exit;
-  }
+  //}
   
  
   /* See QSORT(3) for info about this function. It's not super important. It just sorts the list of
@@ -190,9 +191,9 @@ exit:;
 
   /* If the directory is open, close it */
   if (dirp) {
-    if (!S_ISDIR(finfo.st.st_mode)) {
-      putchar('\n');
-    }
+    //if (!S_ISDIR(finfo.st.st_mode)) {
+     // putchar('\n');
+    //}
     closedir(dirp);         /* Close the directory (dirp) */
   }
 
