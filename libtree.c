@@ -34,6 +34,23 @@
 // -------------------------------------------------------------------------------------------------
 
 
+/* ################################################################################################### */
+/* #                                                                                                 # */
+/* #                                                                                                 # */
+/* #                              !!!  NOTICE OF REUSED CODE !!!                                     # */
+/* #                                                                                                 # */
+/* #        I am resuing my code from the Fall 2023 quarter. This code was started as a              # */
+/* #        skeleton code provided in the Fall 2023 tree module. The code was available from         # */
+/* #        /class/cs344/assignments/01-tree/skeleton-code. I then finished the code                 # */
+/* #        in my writing. The source to the Fall 2023 tree megathread and the tree module           # */
+/* #        is below:                                                                                # */
+/* #        https://edstem.org/us/courses/48016/discussion/3658965                                   # */
+/* #   https://canvas.oregonstate.edu/courses/1951545/assignments/9418023?module_item_id=23698133    # */
+/* #                                                                                                 # */
+/* #                                                                                                 # */
+/* ################################################################################################### */
+
+
 #define _POSIX_C_SOURCE 200809L
 #define _XOPEN_SOURCE 700
 
